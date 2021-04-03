@@ -10,9 +10,6 @@ tabuleiro = [[0,0,0,3,0,0,2,0],
              [0,0,0,0,0,3,0,0],
              [0,5,0,0,0,5,0,0]]
 
-# print(np.matrix(tabuleiro))
-# print("----------------------")
-
 regioes = [
     ([(0,0),(0,1),(0,2),(1,0)],[4]),
     ([(0,3),(1,3),(2,3),(2,2),(3,3)],[3]),
@@ -29,7 +26,7 @@ regioes = [
     ([(5,5),(6,5),(6,6),(7,6),(7,7)],[3])
 ]
 
-copiaRegioes = deepcopy(regioes)
+copiaRegioes = deepcopy(regioes) # Copia a matriz de regiões para uma variavél auxiliar, sem modificar a matriz original
 
 def retornaArea(i, j, r):
     for t in r:
@@ -169,19 +166,10 @@ def solucao():
                 for n in range(len(regiaoAtual[0])+1):
                     if n not in regiaoAtual[1]:
                         if possibilidade(i, j, n, len(tabuleiro), len(tabuleiro[i])):
-                            # if (tabuleiro[i][j] > 0) and (tabuleiro[i][j] in regiaoAtual[1]):
-                            #     regiaoAtual[1].remove(tabuleiro[i][j])
                             tabuleiro[i][j] = n
                             regiaoAtual[1].append(n)
-                            # if checar() is False:
                             solucao()
                             copiaRegioes = deepcopy(regioes)
-                            # tabuleiro[i][j] = 0
-                # print(np.matrix(copiaRegioes))
                 return
 
 solucao()
-
-print(np.matrix(tabuleiro))
-print("----------------------")
-print(np.matrix(regioes))
