@@ -159,15 +159,6 @@ def possibilidade(i, j, n, tamanhoLinha, tamanhoColuna):
 
     return True
 
-def checarRegiao(regiaoAtual, n):
-    global tabuleiro
-    print(regiaoAtual[0])
-    for tupla in regiaoAtual[0]:
-        print(tabuleiro[tupla[0]][tupla[1]], n)
-        if tabuleiro[tupla[0]][tupla[1]] == n:
-            return True
-    return False
-
 def solucao():
     global tabuleiro
     global copiaRegioes
