@@ -10,6 +10,18 @@ tabuleiro = [[0,0,0,3,0,0,2,0],
              [0,0,0,0,0,3,0,0],
              [0,5,0,0,0,5,0,0]]
 
+# tabuleiro = [[1,3,2,3,2,3,2,3],
+#              [4,5,1,5,1,5,4,5],
+#              [3,2,4,2,4,2,3,1],
+#              [4,1,5,1,3,1,5,4],
+#              [3,2,4,2,5,2,3,1],
+#              [4,1,5,3,4,1,5,4],
+#              [2,3,4,1,2,3,2,1],
+#              [1,5,2,3,4,5,4,5]]
+
+# print(np.matrix(tabuleiro))
+# print("----------------------")
+
 regioes = [
     ([(0,0),(0,1),(0,2),(1,0)],[4]),
     ([(0,3),(1,3),(2,3),(2,2),(3,3)],[3]),
@@ -26,15 +38,7 @@ regioes = [
     ([(5,5),(6,5),(6,6),(7,6),(7,7)],[3])
 ]
 
-copiaRegioes = deepcopy(regioes) # Copia a matriz de regiões para uma variavél auxiliar, sem modificar a matriz original
-
-def retornaArea(i, j, r):
-    for t in r:
-        p = t[0]
-        for p1 in p:
-            if (i == p1[0]) and (j == p1[1]):
-                return t
-    return None
+copiaRegioes = deepcopy(regioes)
 
 def checarCasasOrtogonais(i, j, n, tamanhoLinha, tamanhoColuna):
     if i == 0:
@@ -155,21 +159,50 @@ def possibilidade(i, j, n, tamanhoLinha, tamanhoColuna):
 
     return True
 
+def checarRegiao(regiaoAtual, n):
+    global tabuleiro
+    print(regiaoAtual[0])
+    for tupla in regiaoAtual[0]:
+        print(tabuleiro[tupla[0]][tupla[1]], n)
+        if tabuleiro[tupla[0]][tupla[1]] == n:
+            return True
+    return False
+
 def solucao():
     global tabuleiro
     global copiaRegioes
     global regioes
-    for i in range(len(tabuleiro)):
-        for j in range(len(tabuleiro[i])):
-            regiaoAtual = retornaArea(i, j, copiaRegioes)
-            if tabuleiro[i][j] == 0:
-                for n in range(len(regiaoAtual[0])+1):
+    for regiaoAtual in regioes:
+        for i in range(len(regiaoAtual[0])):
+            tupla = regiaoAtual[0][i]
+            if tabuleiro[tupla[0]][tupla[1]] == 0:
+                for n in range(1, len(regiaoAtual[0])+1):
                     if n not in regiaoAtual[1]:
-                        if possibilidade(i, j, n, len(tabuleiro), len(tabuleiro[i])):
-                            tabuleiro[i][j] = n
+                        if possibilidade(tupla[0], tupla[1], n, len(tabuleiro), len(tabuleiro[tupla[0]])):
+                            tabuleiro[tupla[0]][tupla[1]] = n
                             regiaoAtual[1].append(n)
                             solucao()
-                            copiaRegioes = deepcopy(regioes)
+                        else:
+                            if len(regiaoAtual[1]) > 0:
+                                regiaoAtual[1].remove(regiaoAtual[1][len(regiaoAtual[1])-1])
+
                 return
 
 solucao()
+
+# Não é necessário Implementar esse fim, apenas exiba a matriz de solução no final
+def func():
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro[i])):
+            if possibilidade(i, j, tabuleiro[i][j], len(tabuleiro), len(tabuleiro[i])) is False:
+                return False
+    return True
+
+if func():
+    print("Solução")
+else:
+    print("Não é solução")
+
+print(np.matrix(tabuleiro))
+print("----------------------")
+print(np.matrix(regioes))
